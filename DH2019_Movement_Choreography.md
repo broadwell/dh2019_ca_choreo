@@ -8,9 +8,7 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
-```
+
 
 ## Initial setup
 
@@ -38,7 +36,8 @@ After opening the notebook in Colab, you'll need to click `File->Save a Copy in 
 
 If you don't have all of these packages installed, you'll need to run some or all of the first line (without the #) on your local Rstudio console:
 
-```{r install_libraries}
+
+```r
 #install.packages(c("distances","ade4","ggplot2","naniar","reshape2","deldir","mdpeer","BBmisc","lubridate"))
 
 library(ggplot2)
@@ -61,14 +60,16 @@ library(lubridate)
 A cover of Jennie's "SOLO" by Lisa Rhee (25 fps):  
 <https://www.youtube.com/watch?v=Zu3hBEZ0RvA>
 
-```{r download_solo}
+
+```r
 download.file("https://docs.google.com/uc?export=download&id=1gZhXTlQU-JTplu4mBRJLhWUxGNc6VZKQ", "solo_figures.csv")
 ```
 
 The final 41 seconds of Taemin's "Drip Drop" performance video (solo, 24 fps):  
 <https://www.youtube.com/watch?v=Oz3mm3tPKfg&t=3m9s>
 
-```{r download_taemin}
+
+```r
 download.file("https://docs.google.com/uc?export=download&id=1mzk6hPEkq8OeUrFuTgUNO2VbmEagxBs2", "Taemin_Drip_Drop_solo.csv")
 ```
 
@@ -76,7 +77,8 @@ The dance practice video for BTS's "Fire" (multi-dancer, 30 fps, downsampled fro
 <https://www.youtube.com/watch?v=sWuYspuN6U8>  
 NOTE: The data for the entire video is quite large (~20 MB) and takes a long time to process, so we'll use an excerpt for now.
 
-```{r download_fire}
+
+```r
 # This gets the entire file
 #download.file("https://docs.google.com/uc?export=download&id=16k6oCGzL7gfFKhWIzVi-MAGb5BMjsOif", "fire_figures.csv")
 download.file("https://docs.google.com/uc?export=download&id=1dEUxcvnOvZgX6mu8ljzW8C20ov4rWNd3", "fire_excerpt.csv")
@@ -86,7 +88,8 @@ download.file("https://docs.google.com/uc?export=download&id=1dEUxcvnOvZgX6mu8lj
 
 These functions include procedures for creating a single-pose distance matrix and its Laplacian matrix equivalent, as well as methods that return a value that quantifies the similarity/difference between two such pose representations.
 
-```{r define_helper_functions}
+
+```r
 # Define empty values so that we can ignore rows that contain them
 na_strings <- c("NA", "N A", "N / A", "N/A", "N/ A")
 
@@ -153,7 +156,8 @@ getfps <- function(Figs) {
 
 ## Task 1: Visualize and explore choreography self-similarity (singe-dancer time series)
 
-```{r self_comparison}
+
+```r
 # Procedure for single-dancer analysis of choreography self-similarity (across time)
 # method is either "distance" or "laplacian"
 # If step_frames is set to the video frame rate, this produces ~one observation per second
@@ -210,7 +214,8 @@ selfcomparison <- function(Figs, method="distance", step_frames=1) {
 
 ## Task 2: Quantify synchronized movement among multiple dancers
 
-```{r multiple_figures}
+
+```r
 # Procedure for computing per-frame figure similarity for multi-dancer videos
 # method is either "distance" or "laplacian"
 # step_frames can reduce computation -- this many frames are skipped between comparisons
@@ -266,23 +271,32 @@ multifigcompare <- function(Figs, method="distance", step_frames=5, max_figures=
 The following code blocks run the analytical tasks defined above on excerpts of videos and generate visualizations of their results. Feel free to experiment with the settings, or with the code itself.
 
 First, a choreography self-comparison analysis on a solo video. The output is a correlation matrix heatmap visualization, which compares the similarity of every analyzed frame of the video to every other frame.
-```{r solo_comparison}
+
+```r
 Figures <- read.csv("solo_figures.csv", na = na_strings)
 Figs <- Figures[complete.cases(as.data.frame(Figures)),]
 selfcomparison(Figs, "laplacian", step_frames=24)
 ```
 
+![](DH2019_Movement_Choreography_files/figure-html/solo_comparison-1.png)<!-- -->
+
 Another solo self-comparison analysis, but with a considerably faster-paced performance video. Increasing the frame sample rate therefore is prudent, and it's a shorter video, so we can use the longer-running but more accurate distance-based similarity metric.
-```{r another_solo}
+
+```r
 Figures <- read.csv("Taemin_Drip_Drop_solo.csv", na = na_strings)
 Figs <- Figures[complete.cases(as.data.frame(Figures)),]
 selfcomparison(Figs, "distance", step_frames=6)
 ```
 
+![](DH2019_Movement_Choreography_files/figure-html/another_solo-1.png)<!-- -->
+
 Finally, a per-frame pose similarity comparison across all dancers in a multi-dancer video. The output is a time-series plot of the average pose similarity values for each analyzed frame, with bars indicating the standard deviation around each mean.
-```{r multifig_comparison}
+
+```r
 #Figures <- read.csv("fire_figures.csv", na = na_strings)
 Figures <- read.csv("fire_excerpt.csv", na = na_strings)
 Figs <- Figures[complete.cases(as.data.frame(Figures)),]
 multifigcompare(Figs, "distance", step_frames=6)
 ```
+
+![](DH2019_Movement_Choreography_files/figure-html/multifig_comparison-1.png)<!-- -->
