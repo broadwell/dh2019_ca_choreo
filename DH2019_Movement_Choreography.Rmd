@@ -280,7 +280,7 @@ selfcomparison(Figs, "distance", step_frames=6)
 ```
 
 Finally, a per-frame pose similarity comparison across all dancers in a multi-dancer video. The output is a time-series plot of the average pose similarity values for each analyzed frame, with bars indicating the standard deviation around each mean.
-```{r multifig_comparison}
+```{r multifig_comparison}`
 #Figures <- read.csv("fire_figures.csv", na = na_strings)
 Figures <- read.csv("fire_excerpt.csv", na = na_strings)
 Figs <- Figures[complete.cases(as.data.frame(Figures)),]
