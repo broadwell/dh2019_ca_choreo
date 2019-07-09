@@ -16,7 +16,7 @@ knitr::opts_chunk$set(echo=TRUE, warning=FALSE, message=FALSE)
 
 If you'd like to run this code during the workshop, you'll need to have R and RStudio installed on your computer. If you haven't already done this, please follow the instructions at the bottom of [this page](http://reproducible-science-curriculum.github.io/2015-09-24-reproducible-science-duml/) (credit to the Software Carpentries).
 
-**Important:** here is [the original R Markdown version of this file](https://raw.githubusercontent.com/broadwell/dh2019_ca_choreo/master/DH2019_Movement_Choreography.Rmd), which you can download and open in RStudio.
+**Important:** here is [the original R Markdown version of this file](http://broadwell.github.io/DH2019_Movement_Choreography.Rmd), which you can download and open in RStudio, and here is [the raw .R format version](http://broadwell.github.io/DH2019_Movement_Choreography.R), if you prefer to use the basic R interpreter.
 
 ## Want to generate your own pose source data?
 
@@ -169,7 +169,7 @@ selfcomparison <- function(Figs, method="distance", step_frames=1) {
 
   frame_i <- 1
   for(i in seq(1,observations)) {
-    #print(paste("comparing",i,"of",observations))
+    print(paste("comparing",i,"of",observations))
     frame_j <- 1
     for(j in seq(1,observations)) {
       if (i == j) {
@@ -244,7 +244,7 @@ multifigcompare <- function(Figs, method="distance", step_frames=5, max_figures=
           }
         }
       }
-      #print(paste("frame ",i,"has",nrow(frame_figs),"figures"))
+      print(paste("frame ",i,"has",nrow(frame_figs),"figures"))
       mean_similarity <- mean(ff_similarities)
       stdev = sd(ff_similarities)
     }
